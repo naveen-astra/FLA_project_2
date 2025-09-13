@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DFA Minimizer{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">DFA Minimizer</div>
+                <nav>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}" 
+                              class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a></li>
+                        <li><a href="{{ url_for('simulate') }}" 
+                              class="{% if request.endpoint == 'simulate' %}active{% endif %}">Simulate</a></li>
+                        <li><a href="{{ url_for('minimize') }}" 
+                              class="{% if request.endpoint == 'minimize' %}active{% endif %}">Minimize</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'error' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 DFA Minimizer Web Application. Built for Formal Language and Automata Theory.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

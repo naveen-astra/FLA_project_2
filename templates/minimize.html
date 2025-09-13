@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}DFA Minimization{% endblock %}
+
+{% block content %}
+<h1 class="page-title">DFA Minimization</h1>
+<p class="text-center mb-3">Minimize your DFA using Hopcroft's algorithm</p>
+
+<div class="grid grid-2">
+    <!-- DFA Input Section -->
+    <div class="card">
+        <h3 class="card-title">DFA Configuration</h3>
+        
+        <div class="form-group">
+            <label for="exampleSelect">Load Example DFA:</label>
+            <select id="exampleSelect" class="form-control">
+                <option value="">Select an example...</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="states">States (comma-separated):</label>
+            <input type="text" id="states" class="form-control" 
+                   placeholder="q0, q1, q2, q3, q4" required>
+        </div>
+
+        <div class="form-group">
+            <label for="alphabet">Alphabet (comma-separated):</label>
+            <input type="text" id="alphabet" class="form-control" 
+                   placeholder="0, 1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="startState">Start State:</label>
+            <input type="text" id="startState" class="form-control" 
+                   placeholder="q0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="acceptStates">Accept States (comma-separated):</label>
+            <input type="text" id="acceptStates" class="form-control" 
+                   placeholder="q3, q4">
+        </div>
+
+        <div class="form-group">
+            <label for="transitions">Transitions (one per line: from,symbol,to):</label>
+            <textarea id="transitions" class="form-control" rows="10" 
+                      placeholder="q0,0,q1&#10;q0,1,q0&#10;q1,0,q2&#10;q1,1,q0" required></textarea>
+            <small class="text-muted">Format: from_state,symbol,to_state (one per line)</small>
+        </div>
+
+        <div class="btn-group">
+            <button id="minimizeBtn" class="btn btn-success">
+                Minimize DFA
+            </button>
+            <button type="button" class="btn btn-outline" onclick="clearForm('dfaForm')">
+                Clear Form
+            </button>
+        </div>
+    </div>
+
+    <!-- Information Section -->
+    <div class="card">
+        <h3 class="card-title">🔍 About DFA Minimization</h3>
+        
+        <h4>What happens during minimization?</h4>
+        <ol>
+            <li><strong>Remove Unreachable States:</strong> States that cannot be reached from the start state</li>
+            <li><strong>Initial Partitioning:</strong> Separate accepting and non-accepting states</li>
+            <li><strong>Refinement:</strong> Split partitions based on transition behavior</li>
+            <li><strong>Convergence:</strong> Continue until no more refinement possible</li>
+            <li><strong>Construction:</strong> Build minimal DFA from final partitions</li>
+        </ol>
+
+        <h4>Why minimize?</h4>
+        <ul>
+            <li>Reduces memory usage</li>
+            <li>Improves execution speed</li>
+            <li>Simplifies analysis</li>
+            <li>Creates cleaner diagrams</li>
+        </ul>
+
+        <div class="alert alert-info mt-3">
+            <strong>Note:</strong> The minimization process preserves the language accepted by the DFA while reducing it to the smallest possible equivalent form.
+        </div>
+    </div>
+</div>
+
+<!-- Minimization Result -->
+<div id="minimizationResult" class="hidden mt-3">
+    <!-- Results will be displayed here -->
+</div>
+
+<!-- Step-by-Step Guide -->
+<div class="card mt-3">
+    <h3 class="card-title">📋 Step-by-Step Guide</h3>
+    <div class="grid grid-3">
+        <div>
+            <h4>1. Prepare Your DFA</h4>
+            <ul>
+                <li>Define all states clearly</li>
+                <li>Specify the complete alphabet</li>
+                <li>List all transitions</li>
+                <li>Identify start and accept states</li>
+                <li>Ensure DFA is complete (optional)</li>
+            </ul>
+        </div>
+        <div>
+            <h4>2. Input Format</h4>
+            <ul>
+                <li>States: Use simple names like q0, q1, ...</li>
+                <li>Symbols: Separate with commas</li>
+                <li>Transitions: One per line</li>
+                <li>No spaces in state/symbol names</li>
+                <li>Use consistent naming</li>
+            </ul>
+        </div>
+        <div>
+            <h4>3. Analyze Results</h4>
+            <ul>
+                <li>Compare original vs. minimized</li>
+                <li>Check state reduction count</li>
+                <li>Verify transition table</li>
+                <li>Test with simulation</li>
+                <li>Understand equivalent states</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Examples Section -->
+<div class="card">
+    <h3 class="card-title">📝 Example: DFA with Redundant States</h3>
+    <p>Here's an example of a DFA that can be minimized:</p>
+    
+    <div class="grid grid-2">
+        <div>
+            <h4>Original DFA (5 states)</h4>
+            <div class="code-block">
+States: q0, q1, q2, q3, q4
+Alphabet: 0, 1
+Start State: q0
+Accept States: q2, q4
+
+Transitions:
+q0,0,q1
+q0,1,q0
+q1,0,q2
+q1,1,q3
+q2,0,q2
+q2,1,q4
+q3,0,q2
+q3,1,q3
+q4,0,q4
+q4,1,q4
+            </div>
+        </div>
+        <div>
+            <h4>After Minimization (3 states)</h4>
+            <p>States q2 and q4 are equivalent (both accepting with same behavior), and q1 and q3 have similar transition patterns.</p>
+            
+            <div class="alert alert-success">
+                <strong>Result:</strong> 2 states removed<br>
+                <strong>Reduction:</strong> 40% smaller DFA<br>
+                <strong>Language:</strong> Same language accepted
+            </div>
+            
+            <p><strong>Try it:</strong> Copy the example above and click "Minimize DFA" to see the result!</p>
+        </div>
+    </div>
+</div>
+
+<!-- Common Patterns -->
+<div class="card">
+    <h3 class="card-title">🎯 Common Minimization Patterns</h3>
+    <div class="grid grid-2">
+        <div>
+            <h4>Equivalent States</h4>
+            <p>States are equivalent if they:</p>
+            <ul>
+                <li>Have the same acceptance status</li>
+                <li>Transition to equivalent states on same symbols</li>
+                <li>Can be merged without changing language</li>
+            </ul>
+        </div>
+        <div>
+            <h4>Unreachable States</h4>
+            <p>States that can be removed:</p>
+            <ul>
+                <li>No path from start state</li>
+                <li>Never visited during any input</li>
+                <li>Can be safely deleted</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

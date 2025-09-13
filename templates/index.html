@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}DFA Minimizer - Home{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="page-title">DFA Minimizer Web Application</h1>
+    <p class="mb-3">A comprehensive tool for working with Deterministic Finite Automata (DFA)</p>
+</div>
+
+<div class="grid grid-3">
+    <div class="card">
+        <h3 class="card-title">🔍 What is DFA Minimization?</h3>
+        <p>DFA minimization is the process of reducing a DFA to its smallest equivalent form by merging equivalent states. This results in a DFA that accepts the same language but with the minimum number of states possible.</p>
+        <p><strong>Benefits:</strong></p>
+        <ul>
+            <li>Reduced memory usage</li>
+            <li>Faster execution</li>
+            <li>Cleaner state diagrams</li>
+            <li>Easier analysis</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title">⚙️ Hopcroft's Algorithm</h3>
+        <p>This application uses Hopcroft's algorithm, an efficient method for DFA minimization that works by:</p>
+        <ol>
+            <li>Initially partitioning states into accepting and non-accepting</li>
+            <li>Refining partitions based on transition behavior</li>
+            <li>Continuing until no further refinement is possible</li>
+            <li>Constructing the minimal DFA from final partitions</li>
+        </ol>
+        <p><strong>Time Complexity:</strong> O(kn log n) where k is alphabet size and n is number of states.</p>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title">🚀 Features</h3>
+        <ul>
+            <li><strong>DFA Simulation:</strong> Test strings against your DFA</li>
+            <li><strong>DFA Minimization:</strong> Reduce DFA to minimal form</li>
+            <li><strong>Visual Results:</strong> Clear transition tables and paths</li>
+            <li><strong>Example DFAs:</strong> Pre-loaded examples to get started</li>
+            <li><strong>JSON Support:</strong> Import/export DFA configurations</li>
+            <li><strong>Error Handling:</strong> Comprehensive validation and error messages</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <h3 class="card-title">📋 How to Use</h3>
+    <div class="grid grid-2">
+        <div>
+            <h4>1. Define Your DFA</h4>
+            <p>Specify the components of your DFA:</p>
+            <ul>
+                <li><strong>States:</strong> Set of all states (e.g., q0, q1, q2)</li>
+                <li><strong>Alphabet:</strong> Input symbols (e.g., 0, 1, a, b)</li>
+                <li><strong>Transitions:</strong> State transitions for each symbol</li>
+                <li><strong>Start State:</strong> Initial state</li>
+                <li><strong>Accept States:</strong> Final/accepting states</li>
+            </ul>
+        </div>
+        <div>
+            <h4>2. Choose Your Action</h4>
+            <p>Select what you want to do:</p>
+            <ul>
+                <li><strong>Simulate:</strong> Test if strings are accepted</li>
+                <li><strong>Minimize:</strong> Reduce to minimal equivalent DFA</li>
+            </ul>
+            <p>You can also load example DFAs to see the tool in action!</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 class="card-title">🎯 Quick Start</h3>
+    <div class="btn-group text-center">
+        <a href="{{ url_for('simulate') }}" class="btn btn-primary">
+            Start Simulating DFAs
+        </a>
+        <a href="{{ url_for('minimize') }}" class="btn btn-success">
+            Minimize a DFA
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <h3 class="card-title">📚 DFA Input Format</h3>
+    <div class="grid grid-2">
+        <div>
+            <h4>States & Alphabet</h4>
+            <p>Enter comma-separated values:</p>
+            <div class="code-block">
+States: q0, q1, q2, q3
+Alphabet: 0, 1
+Start State: q0
+Accept States: q2, q3
+            </div>
+        </div>
+        <div>
+            <h4>Transitions</h4>
+            <p>One transition per line (from,symbol,to):</p>
+            <div class="code-block">
+q0,0,q1
+q0,1,q0
+q1,0,q2
+q1,1,q0
+q2,0,q3
+q2,1,q0
+q3,0,q3
+q3,1,q3
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info">
+    <strong>💡 Tip:</strong> Start with the example DFAs to understand the input format and see the minimization process in action. The examples cover various types of DFAs including simple binary patterns, string matching, and more complex automata.
+</div>
+{% endblock %}

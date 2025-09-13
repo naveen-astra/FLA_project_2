@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}DFA Simulation{% endblock %}
+
+{% block content %}
+<h1 class="page-title">DFA Simulation</h1>
+<p class="text-center mb-3">Test if input strings are accepted by your DFA</p>
+
+<div class="grid grid-2">
+    <!-- DFA Input Section -->
+    <div class="card">
+        <h3 class="card-title">DFA Configuration</h3>
+        
+        <div class="form-group">
+            <label for="exampleSelect">Load Example DFA:</label>
+            <select id="exampleSelect" class="form-control">
+                <option value="">Select an example...</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="states">States (comma-separated):</label>
+            <input type="text" id="states" class="form-control" 
+                   placeholder="q0, q1, q2, q3" required>
+        </div>
+
+        <div class="form-group">
+            <label for="alphabet">Alphabet (comma-separated):</label>
+            <input type="text" id="alphabet" class="form-control" 
+                   placeholder="0, 1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="startState">Start State:</label>
+            <input type="text" id="startState" class="form-control" 
+                   placeholder="q0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="acceptStates">Accept States (comma-separated):</label>
+            <input type="text" id="acceptStates" class="form-control" 
+                   placeholder="q2, q3">
+        </div>
+
+        <div class="form-group">
+            <label for="transitions">Transitions (one per line: from,symbol,to):</label>
+            <textarea id="transitions" class="form-control" rows="8" 
+                      placeholder="q0,0,q1&#10;q0,1,q0&#10;q1,0,q2&#10;q1,1,q0" required></textarea>
+            <small class="text-muted">Format: from_state,symbol,to_state (one per line)</small>
+        </div>
+    </div>
+
+    <!-- Simulation Section -->
+    <div class="card">
+        <h3 class="card-title">String Simulation</h3>
+        
+        <div class="form-group">
+            <label for="inputString">Input String:</label>
+            <input type="text" id="inputString" class="form-control" 
+                   placeholder="Enter string to test (e.g., 0011)">
+            <small class="text-muted">Enter a string to test against the DFA</small>
+        </div>
+
+        <div class="btn-group">
+            <button id="simulateBtn" class="btn btn-primary">
+                Simulate
+            </button>
+            <button type="button" class="btn btn-outline clear-btn" data-target="inputString">
+                Clear Input
+            </button>
+        </div>
+
+        <!-- Simulation Result -->
+        <div id="simulationResult" class="hidden mt-3">
+            <!-- Results will be displayed here -->
+        </div>
+
+        <!-- Quick Test Section -->
+        <div class="mt-3">
+            <h4>Quick Test Strings</h4>
+            <p class="text-muted">Click to test common strings:</p>
+            <div class="btn-group">
+                <button class="btn btn-outline" onclick="document.getElementById('inputString').value=''; document.getElementById('simulateBtn').click();">
+                    ε (empty)
+                </button>
+                <button class="btn btn-outline" onclick="document.getElementById('inputString').value='0'; document.getElementById('simulateBtn').click();">
+                    0
+                </button>
+                <button class="btn btn-outline" onclick="document.getElementById('inputString').value='1'; document.getElementById('simulateBtn').click();">
+                    1
+                </button>
+                <button class="btn btn-outline" onclick="document.getElementById('inputString').value='01'; document.getElementById('simulateBtn').click();">
+                    01
+                </button>
+                <button class="btn btn-outline" onclick="document.getElementById('inputString').value='10'; document.getElementById('simulateBtn').click();">
+                    10
+                </button>
+                <button class="btn btn-outline" onclick="document.getElementById('inputString').value='0011'; document.getElementById('simulateBtn').click();">
+                    0011
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Help Section -->
+<div class="card mt-3">
+    <h3 class="card-title">💡 Simulation Help</h3>
+    <div class="grid grid-2">
+        <div>
+            <h4>Understanding Results</h4>
+            <ul>
+                <li><strong class="accepted">ACCEPTED:</strong> String is accepted by the DFA</li>
+                <li><strong class="rejected">REJECTED:</strong> String is not accepted by the DFA</li>
+                <li><strong>Path:</strong> Shows the sequence of states visited</li>
+                <li><strong>Final State:</strong> The state where simulation ended</li>
+            </ul>
+        </div>
+        <div>
+            <h4>Common Issues</h4>
+            <ul>
+                <li><strong>Invalid Symbol:</strong> Input contains symbols not in alphabet</li>
+                <li><strong>Missing Transition:</strong> No transition defined for state-symbol pair</li>
+                <li><strong>Invalid State:</strong> State in transition not in state set</li>
+                <li><strong>Empty Input:</strong> Ensure all required fields are filled</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Examples Section -->
+<div class="card">
+    <h3 class="card-title">📝 Example: Binary Strings Ending in "01"</h3>
+    <p>Here's an example DFA that accepts binary strings ending in "01":</p>
+    
+    <div class="grid grid-2">
+        <div>
+            <h4>DFA Configuration</h4>
+            <div class="code-block">
+States: q0, q1, q2
+Alphabet: 0, 1
+Start State: q0
+Accept States: q2
+
+Transitions:
+q0,0,q1
+q0,1,q0
+q1,0,q1
+q1,1,q2
+q2,0,q1
+q2,1,q0
+            </div>
+        </div>
+        <div>
+            <h4>Test Cases</h4>
+            <ul>
+                <li><strong>"01"</strong> → ACCEPTED (ends in 01)</li>
+                <li><strong>"101"</strong> → ACCEPTED (ends in 01)</li>
+                <li><strong>"1001"</strong> → ACCEPTED (ends in 01)</li>
+                <li><strong>"10"</strong> → REJECTED (ends in 10)</li>
+                <li><strong>"11"</strong> → REJECTED (ends in 11)</li>
+                <li><strong>"00"</strong> → REJECTED (ends in 00)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
